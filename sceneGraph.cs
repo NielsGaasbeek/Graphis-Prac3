@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 
 namespace Template_P3
@@ -15,6 +16,11 @@ namespace Template_P3
         public void loadMesh(string path)
         {
             meshes.Add(new Mesh(path));
+        }
+
+        public void Render(Matrix4 transform)
+        {
+
         }
     }
 }
