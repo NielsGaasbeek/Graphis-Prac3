@@ -6,21 +6,35 @@ namespace Template_P3
 {
     class sceneGraph
     {
-        public List<Mesh> meshes = new List<Mesh>();
+        public Dictionary<string, Mesh> graph;
 
         public sceneGraph()
         {
-
+            graph = new Dictionary<string, Mesh>();
         }
 
-        public void loadMesh(string path)
+        public void loadMesh(string id, string path, Mesh parent = null)
         {
-            meshes.Add(new Mesh(path));
+            if(parent != null)
+            {
+                graph[id].Children.Add(id, new Mesh(path));
+            }
+            else
+            {
+                graph.Add(id, new Mesh(path));
+            }
         }
 
-        public void Render(Matrix4 transform)
+        public void Render(Shader shader, Matrix4 transform, Texture texture)
         {
-
+            foreach(KeyValuePair<string, Mesh> M in graph)
+            {
+                M.Value.Render(shader, transform, texture);
+                if(M.Value.Children.Count > 0)
+                {
+                    //render children
+                }
+            }
         }
     }
 }

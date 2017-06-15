@@ -8,7 +8,6 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Template_P3
 {
-
     class Game
     {
         // member variables
@@ -30,11 +29,11 @@ namespace Template_P3
         public void Init()
         {
             scene = new sceneGraph();
-            scene.loadMesh("../../assets/teapot.obj");
-            scene.loadMesh("../../assets/floor.obj");
-            // load teapot
-            //mesh = new Mesh("../../assets/teapot.obj");
-            //floor = new Mesh("../../assets/floor.obj");
+
+            //load meshes
+            scene.loadMesh("Teapot", "../../assets/teapot.obj");
+            scene.loadMesh("Floor", "../../assets/floor.obj");
+
             // initialize stopwatch
             timer = new Stopwatch();
             timer.Reset();
@@ -79,12 +78,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                foreach(Mesh M in scene.meshes)
-                {
-                    M.Render(shader, transform, wood);
-                }
-                //mesh.Render(shader, transform, wood);
-                //floor.Render(shader, transform, wood);
+                scene.Render(shader, transform, wood);
 
                 // render quad
                 target.Unbind();
