@@ -30,7 +30,7 @@ namespace Template_P3
         {
             scene = new sceneGraph();
 
-            //load meshes met (id, filepath, optionele parent (default: null))
+            //load meshes met (id, filepath, optionele parent (default: ""))
             scene.loadMesh("Teapot", "../../assets/teapot.obj");
             scene.loadMesh("Floor", "../../assets/floor.obj");
 

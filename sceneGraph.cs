@@ -17,22 +17,22 @@ namespace Template_P3
             children = new Dictionary<string, Mesh>();
         }
 
-        public void loadMesh(string id, string path, Mesh parent = null)
+        public void loadMesh(string id, string path, string parent = "")
         {
             temp = new Mesh(path);  //tijdelijke opslag mesh
 
-            if (parent != null)     //als demesh een child is, is de parent niet null
+            if (parent != "")     //als demesh een child is, is de parent niet null
             {
                 children.Add(id, temp); //dus komt hij in de lijst van children
 
                 //als de parent in de lijst van hoofdmeshes staat, voeg hem dan ook als child van de mesh toe
-                if (graph.ContainsKey(id))  
+                if (graph.ContainsKey(parent))  
                 {
-                    graph[id].Children.Add(id, temp);
+                    graph[parent].Children.Add(id, temp);
                 }
-                else if (children.ContainsKey(id)) //als het de child van een child (van een child etc etc), voeg hem dan daaraan toe
+                else if (children.ContainsKey(parent)) //als het de child van een child (van een child etc etc), voeg hem dan daaraan toe
                 {
-                    children[id].Children.Add(id, temp);
+                    children[parent].Children.Add(id, temp);
                 }
                 else //extra voor het geval de parent niet gevonden is
                 {
