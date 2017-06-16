@@ -6,27 +6,49 @@ namespace Template_P3
 {
     class sceneGraph
     {
-        public Dictionary<string, Mesh> graph;
+        public Dictionary<string, Mesh> graph;      //een lijst met de 'hoofd meshes'
+        public Dictionary<string, Mesh> children;   //lijst waarin alle meshes met parent != null staan
+
+        Mesh temp;
 
         public sceneGraph()
         {
             graph = new Dictionary<string, Mesh>();
+            children = new Dictionary<string, Mesh>();
         }
 
         public void loadMesh(string id, string path, Mesh parent = null)
         {
-            if(parent != null)
+            temp = new Mesh(path);  //tijdelijke opslag mesh
+
+            if (parent != null)     //als demesh een child is, is de parent niet null
             {
-                graph[id].Children.Add(id, new Mesh(path));
+                children.Add(id, temp); //dus komt hij in de lijst van children
+
+                //als de parent in de lijst van hoofdmeshes staat, voeg hem dan ook als child van de mesh toe
+                if (graph.ContainsKey(id))  
+                {
+                    graph[id].Children.Add(id, temp);
+                }
+                else if (children.ContainsKey(id)) //als het de child van een child (van een child etc etc), voeg hem dan daaraan toe
+                {
+                    children[id].Children.Add(id, temp);
+                }
+                else //extra voor het geval de parent niet gevonden is
+                {
+                    Console.WriteLine("Parent mesh '" + id + "' not found");
+                }
             }
-            else
+            else //heeft het geen parent, dan is het een 'hoofd mesh' en komt hij in de hoofdlijst
             {
-                graph.Add(id, new Mesh(path));
+                graph.Add(id, temp);
             }
         }
 
         public void Render(Shader shader, Matrix4 transform, Texture texture)
         {
+            //de hooflijst word gerenderd, elke mesh in de hoofdlijst 
+            //heeft zijn eigen lijst met children die recursief worden gerenderd.
             foreach(KeyValuePair<string, Mesh> M in graph)
             {
                 M.Value.Render(shader, transform, texture);
