@@ -55,13 +55,22 @@ namespace Template_P3
                 if (M.Value.Children.Count > 0)
                 {
                     //render children
-
-                    //temporary
                     foreach(Mesh L in M.Value.Children)
                     {
-                        L.Render(shader, transform, texture);
+                        RenderChild(L, shader, M.Value.modelMatrix, texture);
                     }
+                }
+            }
+        }
 
+        public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Texture texture)
+        {
+            mesh.Render(shader, transform, texture);
+            if(mesh.Children.Count > 0)
+            {
+                foreach(Mesh M in mesh.Children)
+                {
+                    RenderChild(M, shader, mesh.modelMatrix, texture);
                 }
             }
         }

@@ -18,8 +18,8 @@ namespace Template_P3
         int vertexBufferId;                     // vertex buffer
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;                       // quad buffer
-        Matrix4 modelMatrix;
 
+        public Matrix4 modelMatrix;
         public List<Mesh> Children = new List<Mesh>(); //list which stores children of the mesh
 
         // constructor

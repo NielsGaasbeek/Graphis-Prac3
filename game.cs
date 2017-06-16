@@ -4,7 +4,6 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 // minimal OpenTK rendering framework for UU/INFOGR
-// Brian van Beusekom, 2017
 
 namespace Template_P3
 {
@@ -12,7 +11,6 @@ namespace Template_P3
     {
         // member variables
         public Surface screen;                  // background surface for printing etc.
-        Mesh mesh, floor;                       // a mesh to draw using OpenGL
         const float PI = 3.1415926535f;         // PI
         float a = 0;                            // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
@@ -24,6 +22,7 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         sceneGraph scene;
+        public Matrix4 camTrans;
 
         // initialize
         public void Init()
@@ -87,8 +86,6 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                mesh.Render(shader, transform, wood);
-                floor.Render(shader, transform, wood);
             }
         }
     }
