@@ -20,7 +20,7 @@ namespace Template_P3
         int quadBufferId;                       // quad buffer
         Matrix4 modelMatrix;
 
-        public Dictionary<string, Mesh> Children = new Dictionary<string, Mesh>(); //list which stores children of the mesh
+        public List<Mesh> Children = new List<Mesh>(); //list which stores children of the mesh
 
         // constructor
         public Mesh(string fileName)

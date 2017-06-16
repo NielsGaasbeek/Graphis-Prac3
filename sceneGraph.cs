@@ -26,13 +26,13 @@ namespace Template_P3
                 children.Add(id, temp); //dus komt hij in de lijst van children
 
                 //als de parent in de lijst van hoofdmeshes staat, voeg hem dan ook als child van de mesh toe
-                if (graph.ContainsKey(parent))  
+                if (graph.ContainsKey(parent))
                 {
-                    graph[parent].Children.Add(id, temp);
+                    graph[parent].Children.Add(temp);
                 }
                 else if (children.ContainsKey(parent)) //als het de child van een child (van een child etc etc), voeg hem dan daaraan toe
                 {
-                    children[parent].Children.Add(id, temp);
+                    children[parent].Children.Add(temp);
                 }
                 else //extra voor het geval de parent niet gevonden is
                 {
@@ -47,14 +47,21 @@ namespace Template_P3
 
         public void Render(Shader shader, Matrix4 transform, Texture texture)
         {
-            //de hooflijst word gerenderd, elke mesh in de hoofdlijst 
-            //heeft zijn eigen lijst met children die recursief worden gerenderd.
-            foreach(KeyValuePair<string, Mesh> M in graph)
+            //de hooflijst word gerenderd, elke mesh in de hoofdlijst...
+            //...heeft zijn eigen lijst met children die recursief worden gerenderd.
+            foreach (KeyValuePair<string, Mesh> M in graph)
             {
                 M.Value.Render(shader, transform, texture);
-                if(M.Value.Children.Count > 0)
+                if (M.Value.Children.Count > 0)
                 {
                     //render children
+
+                    //temporary
+                    foreach(Mesh L in M.Value.Children)
+                    {
+                        L.Render(shader, transform, texture);
+                    }
+
                 }
             }
         }
