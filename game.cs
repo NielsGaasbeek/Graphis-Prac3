@@ -66,6 +66,7 @@ namespace Template_P3
 
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            Matrix4 toWorld = transform;
             transform *= Matrix4.CreateTranslation(0, -4, -15);
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
@@ -81,7 +82,7 @@ namespace Template_P3
                 // render scene to render target
                 foreach(Mesh M in scene.meshes)
                 {
-                    M.Render(shader, transform, wood);
+                    M.Render(shader, transform, toWorld , wood);
                 }
                 //mesh.Render(shader, transform, wood);
                 //floor.Render(shader, transform, wood);
@@ -93,8 +94,8 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                mesh.Render(shader, transform, wood);
-                floor.Render(shader, transform, wood);
+                mesh.Render(shader, transform, toWorld, wood);
+                floor.Render(shader, transform, toWorld, wood);
             }
         }
     }
