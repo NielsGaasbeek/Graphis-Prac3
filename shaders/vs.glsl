@@ -8,7 +8,9 @@ in vec3 vPosition;			// untransformed vertex position
 // shader output
 out vec4 normal;
 out vec4 worldPos;			// transformed vertex normal
-out vec2 uv;				
+out vec2 uv;	
+
+//transforms			
 uniform mat4 transform;
 uniform mat4 toWorld;
  

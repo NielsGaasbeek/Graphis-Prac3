@@ -29,7 +29,7 @@ public class Shader
 		attribute_vnrm = GL.GetAttribLocation( programID, "vNormal" );
 		attribute_vuvs = GL.GetAttribLocation( programID, "vUV" );
 		uniform_mview = GL.GetUniformLocation( programID, "transform" );
-        uniform_2wrld = GL.GetUniformLocation(programID, "toWorld");
+        uniform_2wrld = GL.GetUniformLocation( programID, "toWorld");
         }
 
 	// loading shaders
