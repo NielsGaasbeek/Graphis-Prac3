@@ -49,13 +49,18 @@ namespace Template_P3
             if (keyboard[OpenTK.Input.Key.Escape]) this.Exit();
 
             //camera input
-            //is nog compleet nutteloze niet werkende bullshit
-            if (keyboard[Key.A]) game.camTrans += Matrix4.CreateTranslation(1, 0, 0);
-            if (keyboard[Key.S]) game.camTrans += Matrix4.CreateTranslation(1, 0, 0);
-            if (keyboard[Key.W]) game.camTrans += Matrix4.CreateTranslation(1, 0, 0);
-            if (keyboard[Key.D]) game.camTrans += Matrix4.CreateTranslation(1, 0, 0);
-            if (keyboard[Key.Q]) game.camTrans -= Matrix4.CreateRotationY(1);
-            if (keyboard[Key.E]) game.camTrans += Matrix4.CreateRotationY(1);
+            if (keyboard[Key.A]) game.camPos.X += 1;
+            if (keyboard[Key.S]) game.camPos.Z -= 1;
+            if (keyboard[Key.W]) game.camPos.Z += 1;
+            if (keyboard[Key.D]) game.camPos.X -= 1;
+            if (keyboard[Key.Q]) game.RotateZ -= 2;
+            if (keyboard[Key.E]) game.RotateZ += 2;
+            if (keyboard[Key.Space]) game.camPos.Y -= 1;
+            if (keyboard[Key.ShiftLeft]) game.camPos.Y += 1;
+            if (keyboard[Key.Up]) game.RotateX -= 2;
+            if (keyboard[Key.Down]) game.RotateX += 2;
+            if (keyboard[Key.Left]) game.RotateY -= 2;
+            if (keyboard[Key.Right]) game.RotateY += 2;
 
         }
         protected override void OnRenderFrame(FrameEventArgs e)

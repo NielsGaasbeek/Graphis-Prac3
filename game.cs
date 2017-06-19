@@ -12,7 +12,6 @@ namespace Template_P3
         // member variables
         public Surface screen;                  // background surface for printing etc.
         const float PI = 3.1415926535f;         // PI
-        float a = 0;                            // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
         Shader shader;                          // shader to use for rendering
         Shader postproc;                        // shader to use for post processing
@@ -22,7 +21,8 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         sceneGraph scene;
-        public Matrix4 camTrans;
+        public Vector3 camPos = new Vector3(0, -5, -20); //positie camera
+        public int RotateX, RotateY, RotateZ; //rotatie in graden
 
         // initialize
         public void Init()
@@ -63,13 +63,11 @@ namespace Template_P3
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            transform *= Matrix4.CreateTranslation(0, -4, -15);
+            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+            Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) * Matrix4.CreateRotationZ(RotateZ * PI / 180);
+            transform *= Rotation;
+            transform *= Matrix4.CreateTranslation(camPos);
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-
-            // update rotation
-            a += 0.001f * frameDuration;
-            if (a > 2 * PI) a -= 2 * PI;
 
             if (useRenderTarget)
             {

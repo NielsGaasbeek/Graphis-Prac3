@@ -21,7 +21,7 @@ namespace Template_P3
         {
             temp = new Mesh(path);  //tijdelijke opslag mesh
 
-            if (parent != "")     //als demesh een child is, is de parent niet null
+            if (parent != "")     //als de mesh een child is, is de parent niet null
             {
                 children.Add(id, temp); //dus komt hij in de lijst van children
 
