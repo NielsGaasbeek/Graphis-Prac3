@@ -28,6 +28,8 @@ namespace Template_P3
         // initialize
         public void Init()
         {
+            //set the light
+           
             scene = new sceneGraph();
 
             //load meshes met (id, filepath, optionele parent id (default: ""))
@@ -46,6 +48,11 @@ namespace Template_P3
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
+
+            int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
+            GL.UseProgram(shader.programID);
+            GL.Uniform3(lightID, 0.0f, 10.0f, 0.0f);
+
         }
 
         // tick for background surface
@@ -64,10 +71,12 @@ namespace Template_P3
             timer.Start();
 
             // prepare matrix for vertex shader
+
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
             Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) * Matrix4.CreateRotationZ(RotateZ * PI / 180);
             transform *= Rotation;
             transform *= Matrix4.CreateTranslation(camPos);
+
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
             if (useRenderTarget)
@@ -76,6 +85,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
+
                 scene.Render(shader, transform, wood);
 
                 // render quad
