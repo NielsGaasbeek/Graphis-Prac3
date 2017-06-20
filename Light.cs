@@ -9,6 +9,6 @@ namespace Template_P3
 {
     class Light
     {
-        //color and intensity
+        //color and intensity and position
     }
 }
