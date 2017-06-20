@@ -7,6 +7,7 @@ using System.Collections.Generic;
 namespace Template_P3
 {
 
+
     // mesh and loader based on work by JTalton; http://www.opentk.com/node/642
 
     public class Mesh
@@ -121,5 +122,6 @@ namespace Template_P3
             public int Index0, Index1, Index2, Index3;
         }
     }
+
 
 } // namespace Template_P3
