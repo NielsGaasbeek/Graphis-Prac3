@@ -50,8 +50,10 @@ namespace Template_P3
             quad = new ScreenQuad();
 
             int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
+            int ambientID = GL.GetUniformLocation(shader.programID, "ambientColor");
             GL.UseProgram(shader.programID);
             GL.Uniform3(lightID, 5.0f, 12.0f, 5.0f);
+            GL.Uniform3(ambientID, 0f, 0f, 0f);
 
         }
 
