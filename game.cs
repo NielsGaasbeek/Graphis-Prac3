@@ -73,7 +73,9 @@ namespace Template_P3
             // prepare matrix for vertex shader
 
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-            Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) * Matrix4.CreateRotationZ(RotateZ * PI / 180);
+            toWorld = transform;
+            Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) *
+                Matrix4.CreateRotationZ(RotateZ * PI / 180);
             transform *= Rotation;
             transform *= Matrix4.CreateTranslation(camPos);
 
@@ -85,8 +87,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-
-                scene.Render(shader, transform, wood);
+                scene.Render(shader, transform, toWorld, wood);
 
                 // render quad
                 target.Unbind();
