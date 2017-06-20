@@ -4,18 +4,14 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 // minimal OpenTK rendering framework for UU/INFOGR
-// Brian van Beusekom, 2017
 
 namespace Template_P3
 {
-
     class Game
     {
         // member variables
         public Surface screen;                  // background surface for printing etc.
-        Mesh mesh, floor;                       // a mesh to draw using OpenGL
         const float PI = 3.1415926535f;         // PI
-        float a = 0;                            // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
         Shader shader;                          // shader to use for rendering
         Shader postproc;                        // shader to use for post processing
@@ -25,6 +21,8 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         sceneGraph scene;
+        public Vector3 camPos = new Vector3(0, -5, -20); //positie camera
+        public int RotateX, RotateY, RotateZ; //rotatie in graden
 
         // initialize
         public void Init()
@@ -32,11 +30,11 @@ namespace Template_P3
             //set the light
            
             scene = new sceneGraph();
-            scene.loadMesh("../../assets/teapot.obj");
-            scene.loadMesh("../../assets/floor.obj");
-            // load teapot
-            //mesh = new Mesh("../../assets/teapot.obj");
-            //floor = new Mesh("../../assets/floor.obj");
+
+            //load meshes met (id, filepath, optionele parent id (default: ""))
+            scene.loadMesh("Teapot", "../../assets/teapot.obj");
+            scene.loadMesh("Floor", "../../assets/floor.obj");
+
             // initialize stopwatch
             timer = new Stopwatch();
             timer.Reset();
@@ -72,14 +70,13 @@ namespace Template_P3
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            Matrix4 toWorld = transform;
-            transform *= Matrix4.CreateTranslation(0, -4, -15);
-            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
-            // update rotation
-            a += 0.001f * frameDuration;
-            if (a > 2 * PI) a -= 2 * PI;
+            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+            Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) * Matrix4.CreateRotationZ(RotateZ * PI / 180);
+            transform *= Rotation;
+            transform *= Matrix4.CreateTranslation(camPos);
+
+            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
             if (useRenderTarget)
             {
@@ -87,12 +84,8 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                foreach(Mesh M in scene.meshes)
-                {
-                    M.Render(shader, transform , wood);
-                }
-                //mesh.Render(shader, transform, wood);
-                //floor.Render(shader, transform, wood);
+
+                scene.Render(shader, transform, wood);
 
                 // render quad
                 target.Unbind();
@@ -101,8 +94,6 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                mesh.Render(shader, transform, wood);
-                floor.Render(shader, transform, wood);
             }
         }
     }
