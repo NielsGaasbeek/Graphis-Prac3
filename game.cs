@@ -20,6 +20,8 @@ namespace Template_P3
         ScreenQuad quad;                        // screen filling quad for post processing
         bool useRenderTarget = true;
 
+        float a;
+
         sceneGraph scene;
         public Vector3 camPos = new Vector3(0, -5, -20); //positie camera
         public int RotateX, RotateY, RotateZ; //rotatie in graden
@@ -32,9 +34,11 @@ namespace Template_P3
            
             scene = new sceneGraph();
 
-            //load meshes met (id, filepath, optionele parent id (default: ""))
-            scene.loadMesh("Teapot", "../../assets/teapot.obj");
-            scene.loadMesh("Floor", "../../assets/floor.obj");
+            //load meshes met (id, filepath, positie, optionele parent id (default: ""))
+            //scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(0, 0, 0));
+            scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0));
+            scene.loadMesh("Car", "../../assets/car.obj", new Vector3(0, 0, 0));
+            scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0.02f, -0.15f, -1.25f), "Car");
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -51,7 +55,7 @@ namespace Template_P3
 
             int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
             GL.UseProgram(shader.programID);
-            GL.Uniform3(lightID, 0.0f, 10.0f, 0.0f);
+            GL.Uniform3(lightID, 5.0f, 5.0f, 0f);
 
         }
 
@@ -70,8 +74,11 @@ namespace Template_P3
             timer.Reset();
             timer.Start();
 
-            // prepare matrix for vertex shader
+            a += 0.01f;
+            if(a > 2 * PI) { a = 0;}
+            scene.children["wheels"].modelMatrix *= Matrix4.CreateRotationY(a);
 
+            // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
             toWorld = transform;
             Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) *

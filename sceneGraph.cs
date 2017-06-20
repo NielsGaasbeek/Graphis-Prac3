@@ -17,9 +17,10 @@ namespace Template_P3
             children = new Dictionary<string, Mesh>();
         }
 
-        public void loadMesh(string id, string path, string parent = "")
+        public void loadMesh(string id, string path, Vector3 positie, string parent = "")
         {
             temp = new Mesh(path);  //tijdelijke opslag mesh
+            temp.modelMatrix = Matrix4.CreateTranslation(positie);
 
             if (parent != "")     //als de mesh een child is, is de parent niet null
             {
@@ -57,7 +58,7 @@ namespace Template_P3
                     //render children
                     foreach(Mesh L in M.Value.Children)
                     {
-                        RenderChild(L, shader, M.Value.modelMatrix, toWorld, texture);
+                        RenderChild(L, shader, transform, toWorld, texture);
                     }
                 }
             }
@@ -65,7 +66,7 @@ namespace Template_P3
 
         public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
         {
-            mesh.Render(shader, transform * toWorld, toWorld, texture);
+            mesh.Render(shader, mesh.modelMatrix * transform * toWorld, toWorld, texture);
             if(mesh.Children.Count > 0)
             {
                 foreach(Mesh M in mesh.Children)
