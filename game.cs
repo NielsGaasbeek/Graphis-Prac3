@@ -30,10 +30,7 @@ namespace Template_P3
         public void Init()
         {
             //set the light
-            int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
-            GL.UseProgram(shader.programID);
-            GL.Uniform3(lightID, 0.0f, 10.0f, 0.0f);
-
+           
             scene = new sceneGraph();
             scene.loadMesh("../../assets/teapot.obj");
             scene.loadMesh("../../assets/floor.obj");
@@ -52,6 +49,11 @@ namespace Template_P3
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
+
+            int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
+            GL.UseProgram(shader.programID);
+            GL.Uniform3(lightID, 0.0f, 10.0f, 0.0f);
+
         }
 
         // tick for background surface
@@ -87,7 +89,7 @@ namespace Template_P3
                 // render scene to render target
                 foreach(Mesh M in scene.meshes)
                 {
-                    M.Render(shader, transform, toWorld , wood);
+                    M.Render(shader, transform , wood);
                 }
                 //mesh.Render(shader, transform, wood);
                 //floor.Render(shader, transform, wood);
@@ -99,8 +101,8 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                mesh.Render(shader, transform, toWorld, wood);
-                floor.Render(shader, transform, toWorld, wood);
+                mesh.Render(shader, transform, wood);
+                floor.Render(shader, transform, wood);
             }
         }
     }
