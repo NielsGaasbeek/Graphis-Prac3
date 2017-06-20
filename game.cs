@@ -15,12 +15,9 @@ namespace Template_P3
         Stopwatch timer;                        // timer for measuring frame duration
         Shader shader;                          // shader to use for rendering
         Shader postproc;                        // shader to use for post processing
-        Texture wood;                           // texture to use for rendering
         RenderTarget target;                    // intermediate render target
         ScreenQuad quad;                        // screen filling quad for post processing
         bool useRenderTarget = true;
-
-        float a;
 
         sceneGraph scene;
         public Vector3 camPos = new Vector3(0, -5, -20); //positie camera
@@ -34,9 +31,9 @@ namespace Template_P3
 
             //load meshes met (id, filepath, positie, optionele parent id (default: ""))
             //scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(0, 0, 0));
-            scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0));
-            scene.loadMesh("Car", "../../assets/car.obj", new Vector3(0, 0, 0));
-            scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0, -0.2f, -1.3f), "Car");
+            scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0), "../../assets/wood.jpg");
+            scene.loadMesh("Car", "../../assets/car.obj", new Vector3(0, 0, 0), "../../assets/wit.jpg");
+            scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0, -0.2f, -1.3f), "../../assets/wit.jpg", "Car");
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -45,8 +42,6 @@ namespace Template_P3
             // create shaders
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
             postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
-            // load a texture
-            wood = new Texture("../../assets/wood.jpg");
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
@@ -91,7 +86,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                scene.Render(shader, transform, toWorld, wood);
+                scene.Render(shader, transform, toWorld);
 
                 // render quad
                 target.Unbind();

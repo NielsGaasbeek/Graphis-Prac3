@@ -46,6 +46,7 @@ namespace Template_P3
         {
             // called once per frame; app logic
             var keyboard = OpenTK.Input.Keyboard.GetState();
+            var mouse = OpenTK.Input.Mouse.GetCursorState();
             if (keyboard[OpenTK.Input.Key.Escape]) this.Exit();
 
             //camera input
@@ -61,7 +62,6 @@ namespace Template_P3
             if (keyboard[Key.Down]) game.RotateX += 2;
             if (keyboard[Key.Left]) game.RotateY += 2;
             if (keyboard[Key.Right]) game.RotateY -= 2;
-
         }
         protected override void OnRenderFrame(FrameEventArgs e)
         {

@@ -18,7 +18,7 @@ void main()
 	vec3 Phong;
 	float dist = length(L);
 	L = normalize(L);
-	vec3 lightColor = vec3(100,100,100);
+	vec3 lightColor = vec3(1,1,1);
 	vec3 materialColor = texture(pixels, uv).xyz;
 	float attenuation = 1.0f / (dist * dist);
 	Phong = ambientColor + materialColor*(dot(normal.xyz,L))*lightColor;
