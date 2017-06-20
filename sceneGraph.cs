@@ -45,32 +45,32 @@ namespace Template_P3
             }
         }
 
-        public void Render(Shader shader, Matrix4 transform, Texture texture)
+        public void Render(Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
         {
             //de hooflijst word gerenderd, elke mesh in de hoofdlijst...
             //...heeft zijn eigen lijst met children die recursief worden gerenderd.
             foreach (KeyValuePair<string, Mesh> M in graph)
             {
-                M.Value.Render(shader, transform, texture);
+                M.Value.Render(shader, transform * toWorld, toWorld, texture);
                 if (M.Value.Children.Count > 0)
                 {
                     //render children
                     foreach(Mesh L in M.Value.Children)
                     {
-                        RenderChild(L, shader, M.Value.modelMatrix, texture);
+                        RenderChild(L, shader, M.Value.modelMatrix, toWorld, texture);
                     }
                 }
             }
         }
 
-        public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Texture texture)
+        public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
         {
-            mesh.Render(shader, transform, texture);
+            mesh.Render(shader, transform * toWorld, toWorld, texture);
             if(mesh.Children.Count > 0)
             {
                 foreach(Mesh M in mesh.Children)
                 {
-                    RenderChild(M, shader, mesh.modelMatrix, texture);
+                    RenderChild(M, shader, mesh.modelMatrix, toWorld, texture);
                 }
             }
         }

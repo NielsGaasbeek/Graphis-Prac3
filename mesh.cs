@@ -49,10 +49,11 @@ namespace Template_P3
             GL.GenBuffers(1, out quadBufferId);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, quadBufferId);
             GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(quads.Length * Marshal.SizeOf(typeof(ObjQuad))), quads, BufferUsageHint.StaticDraw);
+
         }
 
         // render the mesh using the supplied shader and matrix
-        public void Render(Shader shader, Matrix4 transform, Texture texture)
+        public void Render(Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
         {
             // on first run, prepare buffers
             Prepare(shader);
@@ -68,6 +69,7 @@ namespace Template_P3
 
             // pass transform to vertex shader
             GL.UniformMatrix4(shader.uniform_mview, false, ref transform);
+            GL.UniformMatrix4(shader.uniform_2wrld, false, ref toWorld);
 
             // bind interleaved vertex data
             GL.EnableClientState(ArrayCap.VertexArray);
