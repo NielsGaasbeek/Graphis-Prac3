@@ -23,6 +23,7 @@ namespace Template_P3
         sceneGraph scene;
         public Vector3 camPos = new Vector3(0, -5, -20); //positie camera
         public int RotateX, RotateY, RotateZ; //rotatie in graden
+        Matrix4 toWorld;
 
         // initialize
         public void Init()
