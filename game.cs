@@ -38,7 +38,8 @@ namespace Template_P3
             //scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(0, 0, 0));
             scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0));
             scene.loadMesh("Car", "../../assets/car.obj", new Vector3(0, 0, 0));
-            scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0.02f, -0.15f, -1.25f), "Car");
+            //scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0.02f, -0.15f, -1.25f), "Car");
+            scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0,0,0), "Car");
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -74,9 +75,10 @@ namespace Template_P3
             timer.Reset();
             timer.Start();
 
-            a += 0.01f;
-            if(a > 2 * PI) { a = 0;}
-            scene.children["wheels"].modelMatrix *= Matrix4.CreateRotationY(a);
+            a += 0.001f * frameDuration;
+            if (a > 2 * PI) a -= 2 * PI;
+
+            scene.children["wheels"].modelMatrix *= Matrix4.CreateRotationX(a);
 
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
