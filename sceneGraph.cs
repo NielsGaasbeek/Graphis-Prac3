@@ -52,13 +52,14 @@ namespace Template_P3
             //...heeft zijn eigen lijst met children die recursief worden gerenderd.
             foreach (KeyValuePair<string, Mesh> M in graph)
             {
-                M.Value.Render(shader, transform * toWorld, toWorld, texture);
+                M.Value.Render(shader, M.Value.modelMatrix * transform * toWorld, toWorld, texture);
+
                 if (M.Value.Children.Count > 0)
                 {
                     //render children
                     foreach(Mesh L in M.Value.Children)
                     {
-                        RenderChild(L, shader, transform, toWorld, texture);
+                        RenderChild(L, shader, M.Value.modelMatrix * transform, toWorld, texture);
                     }
                 }
             }
@@ -67,11 +68,12 @@ namespace Template_P3
         public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
         {
             mesh.Render(shader, mesh.modelMatrix * transform * toWorld, toWorld, texture);
+
             if(mesh.Children.Count > 0)
             {
                 foreach(Mesh M in mesh.Children)
                 {
-                    RenderChild(M, shader, mesh.modelMatrix, toWorld, texture);
+                    RenderChild(M, shader, mesh.modelMatrix * transform, toWorld, texture);
                 }
             }
         }

@@ -30,16 +30,13 @@ namespace Template_P3
         // initialize
         public void Init()
         {
-            //set the light
-           
             scene = new sceneGraph();
 
             //load meshes met (id, filepath, positie, optionele parent id (default: ""))
             //scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(0, 0, 0));
             scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0));
             scene.loadMesh("Car", "../../assets/car.obj", new Vector3(0, 0, 0));
-            //scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0.02f, -0.15f, -1.25f), "Car");
-            scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0,0,0), "Car");
+            scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0, -0.2f, -1.3f), "Car");
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -54,9 +51,10 @@ namespace Template_P3
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
 
+            //set the light
             int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
             GL.UseProgram(shader.programID);
-            GL.Uniform3(lightID, 5.0f, 5.0f, 0f);
+            GL.Uniform3(lightID, 0f, 10.0f, 0f);
 
         }
 
@@ -74,11 +72,6 @@ namespace Template_P3
             float frameDuration = timer.ElapsedMilliseconds;
             timer.Reset();
             timer.Start();
-
-            a += 0.001f * frameDuration;
-            if (a > 2 * PI) a -= 2 * PI;
-
-            scene.children["wheels"].modelMatrix *= Matrix4.CreateRotationX(a);
 
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);

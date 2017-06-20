@@ -59,8 +59,8 @@ namespace Template_P3
             if (keyboard[Key.ShiftLeft]) game.camPos.Y += 1;
             if (keyboard[Key.Up]) game.RotateX -= 2;
             if (keyboard[Key.Down]) game.RotateX += 2;
-            if (keyboard[Key.Left]) game.RotateY -= 2;
-            if (keyboard[Key.Right]) game.RotateY += 2;
+            if (keyboard[Key.Left]) game.RotateY += 2;
+            if (keyboard[Key.Right]) game.RotateY -= 2;
 
         }
         protected override void OnRenderFrame(FrameEventArgs e)
