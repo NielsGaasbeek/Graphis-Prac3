@@ -15,14 +15,25 @@ uniform vec3 ambientColor;
 void main()
 {
 	vec3 L = lightPos-worldPos.xyz;
-	vec3 Phong;
+	vec3 diffuseColor;
+	vec3 speculrColor;
+
 	float dist = length(L);
-	L = normalize(L);
-	vec3 lightColor = vec3(100,100,100);
-	vec3 materialColor = texture(pixels, uv).xyz;
 	float attenuation = 1.0f / (dist * dist);
-	Phong = ambientColor + materialColor*(dot(normal.xyz,L))*lightColor;
-	outputColor = vec4(materialColor *  attenuation * lightColor + Phong, 1) ;
+	L = normalize(L);
+
+	vec3 R = normalize(-reflect(L, normal.xyz));
 	
-	//max(0.0f, dot(L,normal.xyz))*
+	vec3 lightColor = vec3(1,1,1);
+	vec3 materialColor = texture(pixels, uv).xyz;
+
+	diffuseColor = materialColor * ( max( 0.0f, dot( normal.xyz,L))) * lightColor;
+
+	float alpha = 5f;
+	speculrColor = materialColor * ( pow( max( 0.0f, dot( L, R)), alpha)) * lightColor;
+
+	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1) ; 
+	
+	//vec4(materialColor *  attenuation * lightColor + Phong, 1);
+	//max(0.0f, dot(L,normal.xyz))* * attenuation
 }
