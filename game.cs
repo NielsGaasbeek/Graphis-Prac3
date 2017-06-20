@@ -29,11 +29,12 @@ namespace Template_P3
         {
             scene = new sceneGraph();
 
-            //load meshes met (id, filepath, positie, optionele parent id (default: ""))
-            //scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(0, 0, 0));
+            //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
+            scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(-7, 0, 0), "../../assets/wit.jpg");
             scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0), "../../assets/wood.jpg");
-            scene.loadMesh("Car", "../../assets/car.obj", new Vector3(0, 0, 0), "../../assets/wit.jpg");
-            scene.loadMesh("wheels", "../../assets/wheel.obj", new Vector3(0, -0.2f, -1.3f), "../../assets/wit.jpg", "Car");
+            scene.loadMesh("Car", "../../assets/car.obj", new Vector3(5, 0, 0), "../../assets/wit.jpg");
+            scene.loadMesh("wheelsF", "../../assets/wheel.obj", new Vector3(0, -0.2f, -1.3f), "../../assets/wit.jpg", "Car");
+            scene.loadMesh("wheelsR", "../../assets/wheel.obj", new Vector3(0, -0.2f, 2.75f), "../../assets/wit.jpg", "Car");
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -73,11 +74,12 @@ namespace Template_P3
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
             toWorld = transform;
+
             Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) *
                 Matrix4.CreateRotationZ(RotateZ * PI / 180);
+
             transform *= Rotation;
             transform *= Matrix4.CreateTranslation(camPos);
-
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
             if (useRenderTarget)
