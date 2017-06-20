@@ -4,6 +4,7 @@
 in vec2 uv;						// interpolated texture coordinates
 in vec4 normal;		
 in vec4 worldPos;				// interpolated normal
+in vec4 cPos;
 uniform sampler2D pixels;		// texture sampler
 
 // shader output
@@ -22,14 +23,15 @@ void main()
 	float attenuation = 1.0f / (dist * dist);
 	L = normalize(L);
 
-	vec3 R = normalize(-reflect(L, normal.xyz));
+	vec3 V = normalize(worldPos.xyz - cPos.xyz);
+	vec3 R = normalize(reflect(V, normal.xyz));
 	
 	vec3 lightColor = vec3(1,1,1);
 	vec3 materialColor = texture(pixels, uv).xyz;
 
 	diffuseColor = materialColor * ( max( 0.0f, dot( normal.xyz,L))) * lightColor;
 
-	float alpha = 5f;
+	float alpha = 10f;
 	speculrColor = materialColor * ( pow( max( 0.0f, dot( L, R)), alpha)) * lightColor;
 
 	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1) ; 
