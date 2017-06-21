@@ -22,16 +22,14 @@ void main()
 	float dist = length(L);
 	float attenuation = 1.0f / (dist * dist);
 	L = normalize(L);
-
 	vec3 V = normalize(worldPos.xyz - cPos.xyz);
 	vec3 R = normalize(reflect(V, normal.xyz));
-	
 	vec3 lightColor = vec3(1,1,1);
 	vec3 materialColor = texture(pixels, uv).xyz;
 
 	diffuseColor = materialColor * ( max( 0.0f, dot( normal.xyz,L))) * lightColor;
 
-	float alpha = 10f;
+	float alpha = 10.0f;
 	speculrColor = materialColor * ( pow( max( 0.0f, dot( L, R)), alpha)) * lightColor;
 
 	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1) ; 

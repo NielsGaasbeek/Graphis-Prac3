@@ -20,14 +20,17 @@ namespace Template_P3
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;                       // quad buffer
 
+        Texture texture;
         public Matrix4 modelMatrix;
         public List<Mesh> Children = new List<Mesh>(); //list which stores children of the mesh
 
         // constructor
-        public Mesh(string fileName)
+        public Mesh(string fileName, string tex)
         {
             MeshLoader loader = new MeshLoader();
             loader.Load(this, fileName);
+
+            texture = new Texture(tex);
         }
 
         // initialization; called during first render
@@ -53,7 +56,7 @@ namespace Template_P3
         }
 
         // render the mesh using the supplied shader and matrix
-        public void Render(Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
+        public void Render(Shader shader, Matrix4 transform, Matrix4 toWorld)
         {
             // on first run, prepare buffers
             Prepare(shader);
