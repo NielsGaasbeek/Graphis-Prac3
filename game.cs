@@ -30,7 +30,8 @@ namespace Template_P3
             scene = new sceneGraph();
 
             //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
-            scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(-7, 0, 0), "../../assets/wit.jpg");
+            //in het geval van een child is de positie t.o.v de parent
+            scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(-7, 0, 0), "../../assets/wood.jpg");
             scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0), "../../assets/wood.jpg");
             scene.loadMesh("Car", "../../assets/car.obj", new Vector3(5, 0, 0), "../../assets/wit.jpg");
             scene.loadMesh("wheelsF", "../../assets/wheel.obj", new Vector3(0, -0.2f, -1.3f), "../../assets/wit.jpg", "Car");
@@ -74,10 +75,10 @@ namespace Template_P3
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
             toWorld = transform;
-
+            //maak de rotatie matrix
             Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) *
                 Matrix4.CreateRotationZ(RotateZ * PI / 180);
-
+            //pas rotatie en translatie toe
             transform *= Rotation;
             transform *= Matrix4.CreateTranslation(camPos);
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
@@ -94,11 +95,6 @@ namespace Template_P3
                 target.Unbind();
                 quad.Render(postproc, target.GetTextureID());
             }
-            else
-            {
-                // render scene directly to the screen
-            }
         }
     }
-
 } // namespace Template_P3

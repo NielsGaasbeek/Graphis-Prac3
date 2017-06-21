@@ -29,7 +29,7 @@ void main()
 
 	diffuseColor = materialColor * ( max( 0.0f, dot( normal.xyz,L))) * lightColor;
 
-	float alpha = 10f;
+	float alpha = 10.0f;
 	speculrColor = materialColor * ( pow( max( 0.0f, dot( L, R)), alpha)) * lightColor;
 
 	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1) ; 
