@@ -21,7 +21,7 @@ namespace Template_P3
 
         sceneGraph scene;
         public Matrix4 toWorld = Matrix4.CreateTranslation(new Vector3(0, -5,-10));
-        float a;
+        float a,b;
 
         // initialize
         public void Init()
@@ -30,9 +30,9 @@ namespace Template_P3
 
             //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
             //in het geval van een child is de positie t.o.v de parent
-            scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(-7, 0, 0), "../../assets/wood.jpg");
+            scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(-7, 0, 0), "../../assets/wit.jpg");
             scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0), "../../assets/wood.jpg");
-            scene.loadMesh("Car", "../../assets/car.obj", new Vector3(5, 0, 0), "../../assets/wit.jpg");
+            scene.loadMesh("Car", "../../assets/car.obj", new Vector3(5, 0, 0), "../../assets/wood.jpg", "Floor");
             scene.loadMesh("wheelsF", "../../assets/wheel.obj", new Vector3(0, -0.2f, -1.3f), "../../assets/wit.jpg", "Car");
             scene.loadMesh("wheelsR", "../../assets/wheel.obj", new Vector3(0, -0.2f, 2.75f), "../../assets/wit.jpg", "Car");
 
@@ -71,15 +71,22 @@ namespace Template_P3
             timer.Reset();
             timer.Start();
 
-            a = 0.001f * frameDuration;
-            if(a >= 2 * PI) { a = 0; }
+            a += 0.01f * frameDuration;
+            b += 0.001f * frameDuration;
+            if (a > 2 * PI) { a -= 2 * PI; b -= 2 * PI; }
 
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
             transform *= toWorld;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
-            scene.children["wheelsF"].modelMatrix *= Matrix4.CreateRotationX(a);
+            scene.children["Car"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.graph["Floor"].modelMatrix = Matrix4.CreateRotationX(b);
+            scene.children["wheelsF"].modelMatrix = Matrix4.CreateRotationX(-a);
+            scene.children["wheelsF"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, -0.2f, -1.3f));
+            scene.children["wheelsR"].modelMatrix = Matrix4.CreateRotationX(-a);
+            scene.children["wheelsR"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, -0.2f, 2.75f));
+
 
             if (useRenderTarget)
             {
