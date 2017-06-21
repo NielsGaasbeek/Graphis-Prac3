@@ -50,18 +50,18 @@ namespace Template_P3
             if (keyboard[OpenTK.Input.Key.Escape]) this.Exit();
 
             //camera input
-            if (keyboard[Key.A]) game.camPos.X += 1;
-            if (keyboard[Key.S]) game.camPos.Z -= 1;
-            if (keyboard[Key.W]) game.camPos.Z += 1;
-            if (keyboard[Key.D]) game.camPos.X -= 1;
-            if (keyboard[Key.Q]) game.RotateZ -= 2;
-            if (keyboard[Key.E]) game.RotateZ += 2;
-            if (keyboard[Key.Space]) game.camPos.Y -= 1;
-            if (keyboard[Key.ShiftLeft]) game.camPos.Y += 1;
-            if (keyboard[Key.Up]) game.RotateX -= 2;
-            if (keyboard[Key.Down]) game.RotateX += 2;
-            if (keyboard[Key.Left]) game.RotateY -= 2;
-            if (keyboard[Key.Right]) game.RotateY += 2;
+            if (keyboard[Key.A]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(1, 0, 0));
+            if (keyboard[Key.S]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(0, 0, -1));
+            if (keyboard[Key.W]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(0, 0, 1));
+            if (keyboard[Key.D]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(-1, 0, 0));
+            if (keyboard[Key.Q]) game.toWorld *= Matrix4.CreateRotationZ(-0.2f);
+            if (keyboard[Key.E]) game.toWorld *= Matrix4.CreateRotationZ(0.2f);
+            if (keyboard[Key.Space]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(0, -1, 0));
+            if (keyboard[Key.ShiftLeft]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(0, 1, 0));
+            if (keyboard[Key.Up]) game.toWorld *= Matrix4.CreateRotationX(-0.2f);
+            if (keyboard[Key.Down]) game.toWorld *= Matrix4.CreateRotationX(0.2f);
+            if (keyboard[Key.Left]) game.toWorld *= Matrix4.CreateRotationY(-0.2f);
+            if (keyboard[Key.Right]) game.toWorld *= Matrix4.CreateRotationY(0.2f);
         }
         protected override void OnRenderFrame(FrameEventArgs e)
         {

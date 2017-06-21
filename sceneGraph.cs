@@ -52,7 +52,7 @@ namespace Template_P3
             //...heeft zijn eigen lijst met children die recursief worden gerenderd.
             foreach (KeyValuePair<string, Mesh> M in graph)
             {
-                M.Value.Render(shader, M.Value.modelMatrix * transform * toWorld, toWorld);
+                M.Value.Render(shader, M.Value.modelMatrix * transform, toWorld);
 
                 if (M.Value.Children.Count > 0)
                 {
@@ -67,13 +67,13 @@ namespace Template_P3
 
         public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld)
         {
-            mesh.Render(shader, mesh.modelMatrix * transform * toWorld, toWorld);
+            mesh.Render(shader,mesh.modelMatrix * transform, toWorld);
 
             if(mesh.Children.Count > 0)
             {
                 foreach(Mesh M in mesh.Children)
                 {
-                    RenderChild(M, shader, mesh.modelMatrix * transform, toWorld);
+                    RenderChild(M, shader,mesh.modelMatrix * transform, toWorld);
                 }
             }
         }

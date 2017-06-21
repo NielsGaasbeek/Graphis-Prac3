@@ -20,9 +20,8 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         sceneGraph scene;
-        public Vector3 camPos = new Vector3(0, -5, -20); //positie camera
-        public int RotateX, RotateY, RotateZ; //rotatie in graden
-        Matrix4 toWorld;
+        public Matrix4 toWorld = Matrix4.CreateTranslation(new Vector3(0, -5,-10));
+        float a;
 
         // initialize
         public void Init()
@@ -72,16 +71,15 @@ namespace Template_P3
             timer.Reset();
             timer.Start();
 
+            a = 0.001f * frameDuration;
+            if(a >= 2 * PI) { a = 0; }
+
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-            toWorld = transform;
-            //maak de rotatie matrix
-            Matrix4 Rotation = Matrix4.CreateRotationY(RotateY * PI / 180) * Matrix4.CreateRotationX(RotateX * PI / 180) *
-                Matrix4.CreateRotationZ(RotateZ * PI / 180);
-            //pas rotatie en translatie toe
-            transform *= Rotation;
-            transform *= Matrix4.CreateTranslation(camPos);
+            transform *= toWorld;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+
+            scene.children["wheelsF"].modelMatrix *= Matrix4.CreateRotationX(a);
 
             if (useRenderTarget)
             {
