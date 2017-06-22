@@ -17,9 +17,10 @@ namespace Template_P3
             children = new Dictionary<string, Mesh>();
         }
 
-        public void loadMesh(string id, string path, string parent = "")
+        public void loadMesh(string id, string path, Vector3 positie, string tex, string parent = "")
         {
-            temp = new Mesh(path);  //tijdelijke opslag mesh
+            temp = new Mesh(path, tex);  //tijdelijke opslag mesh
+            temp.modelMatrix = Matrix4.CreateTranslation(positie);
 
             if (parent != "")     //als de mesh een child is, is de parent niet null
             {
@@ -45,32 +46,34 @@ namespace Template_P3
             }
         }
 
-        public void Render(Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
+        public void Render(Shader shader, Matrix4 transform, Matrix4 toWorld)
         {
             //de hooflijst word gerenderd, elke mesh in de hoofdlijst...
             //...heeft zijn eigen lijst met children die recursief worden gerenderd.
             foreach (KeyValuePair<string, Mesh> M in graph)
             {
-                M.Value.Render(shader, transform * toWorld, toWorld, texture);
+                M.Value.Render(shader, M.Value.modelMatrix * transform, toWorld);
+
                 if (M.Value.Children.Count > 0)
                 {
                     //render children
                     foreach(Mesh L in M.Value.Children)
                     {
-                        RenderChild(L, shader, M.Value.modelMatrix, toWorld, texture);
+                        RenderChild(L, shader, M.Value.modelMatrix * transform, toWorld);
                     }
                 }
             }
         }
 
-        public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld, Texture texture)
+        public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld)
         {
-            mesh.Render(shader, transform * toWorld, toWorld, texture);
+            mesh.Render(shader,mesh.modelMatrix * transform, toWorld);
+
             if(mesh.Children.Count > 0)
             {
                 foreach(Mesh M in mesh.Children)
                 {
-                    RenderChild(M, shader, mesh.modelMatrix, toWorld, texture);
+                    RenderChild(M, shader,mesh.modelMatrix * transform, toWorld);
                 }
             }
         }
