@@ -21,8 +21,8 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         sceneGraph scene;
-        public Vector4 cameraPos;
-        public Matrix4 toWorld;
+        public Vector3 cameraPos;
+        public Matrix4 cameraMovs;
         float a,b;
         int cPosID;
 
@@ -30,8 +30,9 @@ namespace Template_P3
         public void Init()
         {
             scene = new sceneGraph();
-            cameraPos = new Vector4(0f, -5f, -10f, 0f);
-            toWorld = Matrix4.CreateTranslation(cameraPos.Xyz);
+            cameraPos = new Vector3(0f, -5f, -10f);
+            //transform = Matrix4.CreateTranslation(cameraPos);
+            cameraMovs = Matrix4.CreateTranslation(cameraPos);
 
             //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
             //in het geval van een child is de positie t.o.v de parent
@@ -82,15 +83,16 @@ namespace Template_P3
             if (a > 2 * PI) { a -= 2 * PI; b -= 2 * PI; }
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-            transform *= toWorld;
+            Matrix4 transform = Matrix4.Identity;
+            //Matrix4 toWorld = Matrix4.Identity;
+            transform = cameraMovs;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
             GL.Uniform3(cPosID, cameraPos.X, cameraPos.Y, cameraPos.Z);
-            Console.WriteLine(cameraPos.X + " " + cameraPos.Y + " " + cameraPos.Z);
+            //Console.WriteLine(cameraPos.X + " " + cameraPos.Y + " " + cameraPos.Z);
 
-            scene.children["Car"].modelMatrix = Matrix4.CreateRotationY(b);
-            scene.graph["Floor"].modelMatrix = Matrix4.CreateRotationX(b);
+            //scene.children["Car"].modelMatrix = Matrix4.CreateRotationY(b);
+            //scene.graph["Floor"].modelMatrix = Matrix4.CreateRotationX(b);
             scene.children["wheelsF"].modelMatrix = Matrix4.CreateRotationX(-a);
             scene.children["wheelsF"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, -0.2f, -1.3f));
             scene.children["wheelsR"].modelMatrix = Matrix4.CreateRotationX(-a);
@@ -103,7 +105,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                scene.Render(shader, transform, toWorld);
+                scene.Render(shader, transform);
 
                 // render quad
                 target.Unbind();
