@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -20,13 +21,17 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         sceneGraph scene;
-        public Matrix4 toWorld = Matrix4.CreateTranslation(new Vector3(0, -5,-10));
+        public Vector4 cameraPos;
+        public Matrix4 toWorld;
         float a,b;
+        int cPosID;
 
         // initialize
         public void Init()
         {
             scene = new sceneGraph();
+            cameraPos = new Vector4(0f, -5f, -10f, 0f);
+            toWorld = Matrix4.CreateTranslation(cameraPos.Xyz);
 
             //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
             //in het geval van een child is de positie t.o.v de parent
@@ -50,10 +55,11 @@ namespace Template_P3
             //set the light
             int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
             int ambientID = GL.GetUniformLocation(shader.programID, "ambientColor");
+            cPosID = GL.GetUniformLocation(shader.programID, "cameraPos");
             GL.UseProgram(shader.programID);
-            GL.Uniform3(lightID, 5.0f, 12.0f, 5.0f);
+            GL.Uniform3(lightID, 3.0f, 5.0f, 3.0f);
             GL.Uniform3(ambientID, 0f, 0f, 0f);
-
+            GL.Uniform3(cPosID, cameraPos.X, cameraPos.Y, cameraPos.Z);
         }
 
         // tick for background surface
@@ -79,6 +85,9 @@ namespace Template_P3
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
             transform *= toWorld;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+
+            GL.Uniform3(cPosID, cameraPos.X, cameraPos.Y, cameraPos.Z);
+            Console.WriteLine(cameraPos.X + " " + cameraPos.Y + " " + cameraPos.Z);
 
             scene.children["Car"].modelMatrix = Matrix4.CreateRotationY(b);
             scene.graph["Floor"].modelMatrix = Matrix4.CreateRotationX(b);
