@@ -14,8 +14,8 @@ void main()
 	outputColor = texture( pixels, uv ).rgb;
 	// apply dummy postprocessing effect
 	float dx = P.x - 0.5, dy = P.y - 0.5;
-	float distance = sqrt( dx * dx + dy * dy );
-	//outputColor *= sin( distance * 200.0f ) * 0.25f + 0.75f;
+	float distance = -sqrt( dx * dx + dy * dy ) * 0.5f;
+	outputColor += distance;
 }
 
 // EOF
