@@ -32,7 +32,7 @@ void main()
 	float alpha = 10.0f;
 	speculrColor = materialColor * ( pow( max( 0.0f, dot( L, R)), alpha)) * lightColor;
 
-	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1) ; 
+	outputColor = vec4( (ambientColor + diffuseColor /*+ speculrColor*/), 1) ; 
 	
 	//vec4(materialColor *  attenuation * lightColor + Phong, 1);
 	//max(0.0f, dot(L,normal.xyz))* * attenuation

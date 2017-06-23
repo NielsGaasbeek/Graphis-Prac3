@@ -30,11 +30,11 @@ namespace Template_P3
 
             //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
             //in het geval van een child is de positie t.o.v de parent
-            scene.loadMesh("Teapot", "../../assets/teapot.obj", new Vector3(-7, 0, 0), "../../assets/wit.jpg");
-            scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0), "../../assets/wood.jpg");
-            scene.loadMesh("Car", "../../assets/car.obj", new Vector3(5, 0, 0), "../../assets/wood.jpg", "Floor");
-            scene.loadMesh("wheelsF", "../../assets/wheel.obj", new Vector3(0, -0.2f, -1.3f), "../../assets/wit.jpg", "Car");
-            scene.loadMesh("wheelsR", "../../assets/wheel.obj", new Vector3(0, -0.2f, 2.75f), "../../assets/wit.jpg", "Car");
+            scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0), "../../assets/wit.jpg");
+            scene.loadMesh("Sun", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/sun.jpg");
+            scene.loadMesh("Earth", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/earth.jpg","Sun");
+            scene.loadMesh("Moon", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/moon.jpg", "Earth");
+            
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -51,7 +51,7 @@ namespace Template_P3
             int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
             int ambientID = GL.GetUniformLocation(shader.programID, "ambientColor");
             GL.UseProgram(shader.programID);
-            GL.Uniform3(lightID, 5.0f, 12.0f, 5.0f);
+            GL.Uniform3(lightID, 10.0f, 20.0f,0f);
             GL.Uniform3(ambientID, 0f, 0f, 0f);
 
         }
@@ -80,13 +80,15 @@ namespace Template_P3
             transform *= toWorld;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
-            scene.children["Car"].modelMatrix = Matrix4.CreateRotationY(b);
-            scene.graph["Floor"].modelMatrix = Matrix4.CreateRotationX(b);
-            scene.children["wheelsF"].modelMatrix = Matrix4.CreateRotationX(-a);
-            scene.children["wheelsF"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, -0.2f, -1.3f));
-            scene.children["wheelsR"].modelMatrix = Matrix4.CreateRotationX(-a);
-            scene.children["wheelsR"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, -0.2f, 2.75f));
+            scene.graph["Sun"].modelMatrix = Matrix4.CreateRotationY(b);
 
+            scene.children["Earth"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Earth"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(15, 0, 0));
+            scene.children["Earth"].modelMatrix *= Matrix4.CreateScale(0.5f);
+
+            scene.children["Moon"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Moon"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(20, 0, 0));
+            scene.children["Moon"].modelMatrix *= Matrix4.CreateScale(0.3f);
 
             if (useRenderTarget)
             {
