@@ -22,7 +22,8 @@ namespace Template_P3
 
         sceneGraph scene;
         public Vector3 cameraPos;
-        public Matrix4 cameraMovs;
+        Vector4 cameraStart;
+        public Matrix4 cameraMovs, toWorld;
         float a,b;
         int cPosID;
 
@@ -31,8 +32,11 @@ namespace Template_P3
         {
             scene = new sceneGraph();
             cameraPos = new Vector3(0f, -5f, -10f);
+            cameraStart = new Vector4(cameraPos, 1f);
             //transform = Matrix4.CreateTranslation(cameraPos);
-            cameraMovs = Matrix4.CreateTranslation(cameraPos);
+            //cameraMovs = Matrix4.CreateTranslation(cameraPos);
+            cameraMovs = Matrix4.Identity;
+            //Matrix4 test = Matrix4.CreateTranslation(new Vector3(1, 0, 0));
 
             //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
             //in het geval van een child is de positie t.o.v de parent
@@ -60,7 +64,7 @@ namespace Template_P3
             GL.UseProgram(shader.programID);
             GL.Uniform3(lightID, 3.0f, 5.0f, 3.0f);
             GL.Uniform3(ambientID, 0f, 0f, 0f);
-            GL.Uniform3(cPosID, cameraPos.X, cameraPos.Y, cameraPos.Z);
+            GL.Uniform4(cPosID, cameraStart);
         }
 
         // tick for background surface
@@ -88,8 +92,10 @@ namespace Template_P3
             transform = cameraMovs;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
-            GL.Uniform3(cPosID, cameraPos.X, cameraPos.Y, cameraPos.Z);
-            //Console.WriteLine(cameraPos.X + " " + cameraPos.Y + " " + cameraPos.Z);
+            Vector4 test2 = transform * cameraStart;
+            Vector4 test = cameraMovs * cameraStart;
+            GL.Uniform4(cPosID, cameraMovs * cameraStart);
+            Console.WriteLine(test.X + " " + test.Y + " " + test.Z);
 
             //scene.children["Car"].modelMatrix = Matrix4.CreateRotationY(b);
             //scene.graph["Floor"].modelMatrix = Matrix4.CreateRotationX(b);

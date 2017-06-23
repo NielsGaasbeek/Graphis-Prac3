@@ -21,7 +21,7 @@ void main()
 	float attenuation = 1.0f / (dist * dist);
 	L = normalize(L);
 
-	vec3 V = normalize(worldPos.xyz - cPos.xyz);
+	vec3 V = normalize(worldPos.xyz - cameraPos.xyz);
 	vec3 R = normalize(reflect(V, normal.xyz));
 
 	vec3 lightColor = vec3(10,10,10);
@@ -33,8 +33,8 @@ void main()
 	vec3 speculrColor = materialColor * ( pow( max( 0.0f, dot( L, R)), alpha)) * lightColor * attenuation;
 
 
-	diffuseColor = vec3(0,0,0);
-	//speculrColor = vec3(0,0,0);
+	//diffuseColor = vec3(0,0,0);
+	speculrColor = vec3(0,0,0);
 
 	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1) ; 
 	
