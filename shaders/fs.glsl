@@ -46,7 +46,7 @@ void main()
 	//diffuseColor = vec3(0,0,0);
 	//speculrColor = vec3(0,0,0);
 
-	outputColor = vec4( (ambientColor + diffuseColor /*+ speculrColor*/), 1) ; 
+	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1) ; 
 	
 	//vec4(materialColor *  attenuation * lightColor + Phong, 1);
 	//max(0.0f, dot(L,normal.xyz))* * attenuation

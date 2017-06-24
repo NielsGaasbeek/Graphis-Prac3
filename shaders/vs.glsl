@@ -19,13 +19,9 @@ void main()
 {
 	// transform vertex using supplied matrix
 	gl_Position = transform * vec4(vPosition, 1.0);
-	worldPos = transform * vec4(vPosition, 1.0f);
-	normal = transform * vec4(vNormal, 0.0f);
+	worldPos = toWorld * vec4(vPosition, 1.0f);
+	normal = toWorld * vec4(vNormal, 0.0f);
 
 	// forward normal and uv coordinate; will be interpolated over triangle
 	uv = vUV;
-<<<<<<< HEAD
-=======
-	cPos = toWorld * vec4(0, -5, -20, 0);
->>>>>>> refs/remotes/origin/master
 }

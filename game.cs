@@ -35,7 +35,7 @@ namespace Template_P3
         {
             scene = new sceneGraph();
             Vector4 cameraStart = new Vector4(0f, -5f, -10f, 1f);
-            lightPos = new Vector4(0.0f, 10.0f, 0.0f, 1f);
+            lightPos = new Vector4(0.0f, 10.0f, 20.0f, 1f);
 
             camMatrix =  Matrix4.CreateTranslation(cameraStart.Xyz);
             test = Matrix4.CreateTranslation(cameraStart.Xyz);
@@ -65,11 +65,6 @@ namespace Template_P3
             cPosID = GL.GetUniformLocation(shader.programID, "cameraPos");
 
             GL.UseProgram(shader.programID);
-<<<<<<< HEAD
-=======
-            GL.Uniform3(lightID, 10.0f, 20.0f,0f);
-            GL.Uniform3(ambientID, 0f, 0f, 0f);
->>>>>>> refs/remotes/origin/master
 
             GL.Uniform3(lightID, lightPos.Xyz);
             GL.Uniform3(ambientID, 0f, 0f, 0f);
@@ -108,21 +103,12 @@ namespace Template_P3
 
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
-<<<<<<< HEAD
             lightPos = new Vector4(0.0f, 10.0f, 0.0f, 1f) * camMatrix;
             GL.Uniform3(lightID, lightPos.Xyz);
 
             //Console.WriteLine(lightPos.X + " " + lightPos.Y + " " + lightPos.Z);
 
-            //scene.children["Car"].modelMatrix = Matrix4.CreateRotationY(b);
-            //scene.graph["Floor"].modelMatrix = Matrix4.CreateRotationX(b);
-            scene.children["wheelsF"].modelMatrix = Matrix4.CreateRotationX(-a);
-            scene.children["wheelsF"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, -0.2f, -1.3f));
-            scene.children["wheelsR"].modelMatrix = Matrix4.CreateRotationX(-a);
-            scene.children["wheelsR"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, -0.2f, 2.75f));
-=======
             scene.graph["Sun"].modelMatrix = Matrix4.CreateRotationY(b);
->>>>>>> refs/remotes/origin/master
 
             scene.children["Earth"].modelMatrix = Matrix4.CreateRotationY(b);
             scene.children["Earth"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(15, 0, 0));
