@@ -9,7 +9,6 @@ in vec3 vPosition;			// untransformed vertex position
 out vec4 normal;
 out vec4 worldPos;			// transformed vertex normal
 out vec2 uv;
-out vec4 cPos;
 
 //transforms			
 uniform mat4 transform;
@@ -25,5 +24,4 @@ void main()
 
 	// forward normal and uv coordinate; will be interpolated over triangle
 	uv = vUV;
-	cPos = toWorld * vec4(0, -5, -10, 0);
 }
