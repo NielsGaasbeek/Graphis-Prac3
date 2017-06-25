@@ -106,7 +106,8 @@ namespace Template_P3
             lightPos = new Vector4(0.0f, 10.0f, 0.0f, 1f) * camMatrix;
             GL.Uniform3(lightID, lightPos.Xyz);
 
-            //Console.WriteLine(lightPos.X + " " + lightPos.Y + " " + lightPos.Z);
+            Vector4 test = new Vector4(0f, 0f, 0f, 1f) * Matrix4.Invert(camMatrix);
+            Console.WriteLine(test.X + " " + test.Y + " " + test.Z);
 
             scene.graph["Sun"].modelMatrix = Matrix4.CreateRotationY(b);
 

@@ -31,7 +31,7 @@ void main()
 
 	vec3 diffuseColor = materialColor * ( max( 0.0f, dot( normal.xyz, L))) * lightColor * attenuation;
 
-	float alpha = 16.0f;
+	float alpha = 4.0f;
 	vec3 speculrColor ;
 	if (dot(normal.xyz, L) < 0.0f)
 	{
