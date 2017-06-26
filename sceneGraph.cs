@@ -48,18 +48,19 @@ namespace Template_P3
 
         public void Render(Shader shader, Matrix4 transform, Matrix4 toWorld)
         {
+            //Matrix4 toWorld = Matrix4.Identity;
             //de hooflijst word gerenderd, elke mesh in de hoofdlijst...
             //...heeft zijn eigen lijst met children die recursief worden gerenderd.
             foreach (KeyValuePair<string, Mesh> M in graph)
             {
-                M.Value.Render(shader, M.Value.modelMatrix * transform, toWorld);
+                M.Value.Render(shader, M.Value.modelMatrix * transform, M.Value.modelMatrix * toWorld);
 
                 if (M.Value.Children.Count > 0)
                 {
                     //render children
                     foreach(Mesh L in M.Value.Children)
                     {
-                        RenderChild(L, shader, M.Value.modelMatrix * transform, toWorld);
+                        RenderChild(L, shader, M.Value.modelMatrix * transform, M.Value.modelMatrix * toWorld);
                     }
                 }
             }
@@ -67,13 +68,13 @@ namespace Template_P3
 
         public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld)
         {
-            mesh.Render(shader,mesh.modelMatrix * transform, toWorld);
+            mesh.Render(shader, mesh.modelMatrix * transform, mesh.modelMatrix * toWorld);
 
             if(mesh.Children.Count > 0)
             {
                 foreach(Mesh M in mesh.Children)
                 {
-                    RenderChild(M, shader,mesh.modelMatrix * transform, toWorld);
+                    RenderChild(M, shader, mesh.modelMatrix * transform, mesh.modelMatrix * toWorld);
                 }
             }
         }

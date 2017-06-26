@@ -50,18 +50,18 @@ namespace Template_P3
             if (keyboard[OpenTK.Input.Key.Escape]) this.Exit();
 
             //camera input
-            if (keyboard[Key.A]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(1, 0, 0));
-            if (keyboard[Key.S]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(0, 0, -1));
-            if (keyboard[Key.W]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(0, 0, 1));
-            if (keyboard[Key.D]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(-1, 0, 0));
-            if (keyboard[Key.Q]) game.toWorld *= Matrix4.CreateRotationZ(-0.2f);
-            if (keyboard[Key.E]) game.toWorld *= Matrix4.CreateRotationZ(0.2f);
-            if (keyboard[Key.Space]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(0, -1, 0));
-            if (keyboard[Key.ShiftLeft]) game.toWorld *= Matrix4.CreateTranslation(new Vector3(0, 1, 0));
-            if (keyboard[Key.Up]) game.toWorld *= Matrix4.CreateRotationX(-0.2f);
-            if (keyboard[Key.Down]) game.toWorld *= Matrix4.CreateRotationX(0.2f);
-            if (keyboard[Key.Left]) game.toWorld *= Matrix4.CreateRotationY(-0.2f);
-            if (keyboard[Key.Right]) game.toWorld *= Matrix4.CreateRotationY(0.2f);
+            if (keyboard[Key.A]) { game.camMatrix *= Matrix4.CreateTranslation(new Vector3(1, 0, 0));/* game.cameraPos += new Vector3(1, 0, 0); */}
+            if (keyboard[Key.S]) { game.camMatrix *= Matrix4.CreateTranslation(new Vector3(0, 0, -1));/* game.cameraPos += new Vector3(0, 0, -1; */}
+            if (keyboard[Key.W]) { game.camMatrix *= Matrix4.CreateTranslation(new Vector3(0, 0, 1));/* game.cameraPos += new Vector3(0, 0, 1); */}
+            if (keyboard[Key.D]) { game.camMatrix *= Matrix4.CreateTranslation(new Vector3(-1, 0, 0));/* game.cameraPos += new Vector3(-1, 0, 0); */}
+            if (keyboard[Key.Q]) game.camMatrix *= Matrix4.CreateRotationZ(-0.1f);
+            if (keyboard[Key.E]) game.camMatrix *= Matrix4.CreateRotationZ(0.1f);
+            if (keyboard[Key.Space]) { game.camMatrix *= Matrix4.CreateTranslation(new Vector3(0, -1, 0));/* game.cameraPos += new Vector3(0, -1, 0); */}
+            if (keyboard[Key.ShiftLeft]) { game.camMatrix *= Matrix4.CreateTranslation(new Vector3(0, 1, 0));/* game.cameraPos += new Vector3(0, 1, 0); */}
+            if (keyboard[Key.Up]) game.camMatrix *= Matrix4.CreateRotationX(-0.1f);
+            if (keyboard[Key.Down]) game.camMatrix *= Matrix4.CreateRotationX(0.1f);
+            if (keyboard[Key.Left]) game.camMatrix *= Matrix4.CreateRotationY(-0.1f);
+            if (keyboard[Key.Right]) game.camMatrix *= Matrix4.CreateRotationY(0.1f);
         }
         protected override void OnRenderFrame(FrameEventArgs e)
         {

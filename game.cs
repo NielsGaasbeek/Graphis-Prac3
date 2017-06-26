@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -20,8 +21,9 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         sceneGraph scene;
-        public Matrix4 toWorld = Matrix4.CreateTranslation(new Vector3(0, -5,-10));
-        float a,b;
+
+        public Matrix4 camMatrix;
+        int cPosID;
 
         // initialize
         public void Init()
@@ -47,13 +49,18 @@ namespace Template_P3
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
 
-            //set the light
+            //base transformation to the camera-matrix, to set the camera in the start-position
+            camMatrix =  Matrix4.CreateTranslation(new Vector3(0,-5f, -10f));
+
+            //set the light-position, camera-position and ambient-color
             int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
             int ambientID = GL.GetUniformLocation(shader.programID, "ambientColor");
-            GL.UseProgram(shader.programID);
-            GL.Uniform3(lightID, 10.0f, 20.0f,0f);
-            GL.Uniform3(ambientID, 0f, 0f, 0f);
+            cPosID = GL.GetUniformLocation(shader.programID, "cameraPos");
 
+            GL.UseProgram(shader.programID);
+            GL.Uniform3(lightID, new Vector3(0.0f, 10.0f, 20.0f));
+            GL.Uniform3(ambientID, 0f, 0f, 0f);
+            GL.Uniform4(cPosID, new Vector4(0f,-5f,-10f, 1f));
         }
 
         // tick for background surface
@@ -62,6 +69,9 @@ namespace Template_P3
             screen.Clear(0);
             screen.Print("hello world", 2, 2, 0xffff00);
         }
+
+
+        float a,b;
 
         // tick for OpenGL rendering code
         public void RenderGL()
@@ -76,9 +86,13 @@ namespace Template_P3
             if (a > 2 * PI) { a -= 2 * PI; b -= 2 * PI; }
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
-            transform *= toWorld;
+            Matrix4 transform = camMatrix;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+
+            //set the position of the camera for specular calculations
+            GL.UseProgram(shader.programID);
+            Vector4 cameraPos = new Vector4(0f,0f,0f,1f) * Matrix4.Invert(camMatrix);
+            GL.Uniform3(cPosID, cameraPos.Xyz);
 
             scene.graph["Sun"].modelMatrix = Matrix4.CreateRotationY(b);
 
@@ -96,7 +110,7 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                scene.Render(shader, transform, toWorld);
+                scene.Render(shader, transform, Matrix4.Identity);
 
                 // render quad
                 target.Unbind();
