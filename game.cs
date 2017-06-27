@@ -32,8 +32,10 @@ namespace Template_P3
 
             //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
             //in het geval van een child is de positie t.o.v de parent
+
             scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0), "../../assets/wit.jpg");
             scene.loadMesh("Sun", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/sun.jpg");
+
             scene.loadMesh("Mercury", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/Mercury.jpg", "Sun");
             scene.loadMesh("Venus", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/Venus.jpg", "Sun");
             scene.loadMesh("Earth", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/earth.jpg", "Sun");
@@ -43,6 +45,7 @@ namespace Template_P3
             scene.loadMesh("Saturn", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/saturn.jpg", "Sun");
             scene.loadMesh("Uranus", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/uranus.jpg", "Sun");
             scene.loadMesh("Neptune", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/neptune.jpg", "Sun");
+
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -106,6 +109,7 @@ namespace Template_P3
             scene.children["Saturn"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(35, 0, 0));
             scene.children["Saturn"].modelMatrix *= Matrix4.CreateScale(0.7f);
 
+
             scene.children["Uranus"].modelMatrix = Matrix4.CreateRotationY(b);
             scene.children["Uranus"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(60, 0, 60));
             scene.children["Uranus"].modelMatrix *= Matrix4.CreateScale(0.5f);
@@ -117,6 +121,7 @@ namespace Template_P3
         }
 
         float b;
+
 
         // tick for OpenGL rendering code
         public void RenderGL()
@@ -133,10 +138,12 @@ namespace Template_P3
             Matrix4 transform = camMatrix;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
+
             //set the position of the camera for specular calculations
             GL.UseProgram(shader.programID);
             Vector4 cameraPos = new Vector4(0f, 0f, 0f, 1f) * Matrix4.Invert(camMatrix);
             GL.Uniform3(cPosID, cameraPos.Xyz);
+
 
             if (useRenderTarget)
             {
