@@ -58,7 +58,7 @@ namespace Template_P3
                 if (M.Value.Children.Count > 0)
                 {
                     //render children
-                    foreach(Mesh L in M.Value.Children)
+                    foreach (Mesh L in M.Value.Children)
                     {
                         RenderChild(L, shader, M.Value.modelMatrix * transform, M.Value.modelMatrix * toWorld);
                     }
@@ -69,10 +69,11 @@ namespace Template_P3
         public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld)
         {
             mesh.Render(shader, mesh.modelMatrix * transform, mesh.modelMatrix * toWorld);
-
-            if(mesh.Children.Count > 0)
+            //als de mesh weer children heeft, worden deze hier recursief gerenderd. 
+            //Hierdoor kan er theoretisch oneindig diep in de scenegraph worden gegaan en is er dus geen dieptelimiet.
+            if (mesh.Children.Count > 0)
             {
-                foreach(Mesh M in mesh.Children)
+                foreach (Mesh M in mesh.Children)
                 {
                     RenderChild(M, shader, mesh.modelMatrix * transform, mesh.modelMatrix * toWorld);
                 }
