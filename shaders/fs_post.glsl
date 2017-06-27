@@ -19,7 +19,7 @@ void main()
 	//add this distance to the outputColor to make pixels further away darker.
 	outputColor += distance;
 	
-	float aberration = 5.0f;
+	float aberration = 1.0f;
     // retrieve input pixel and apply chromatic aberration
     outputColor.x = texture(pixels, vec2(uv.x, uv.y)).x;
     outputColor.y = texture(pixels, vec2(uv.x + 0.002 * aberration, uv.y)).y;

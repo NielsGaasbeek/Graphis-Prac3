@@ -3,7 +3,9 @@ Job van Zelm		- 5984394
 Niels Gaasbeek		- 5850983
 
 Extra Assignments:
-- vignetting + chromatic abberation
+- Vignetting + Chromatic Abberation
+(Chromatic abberation intensity can be adjusted with the float "abberation" in the fs_post.glsl-file. 
+Increasing this will increase the visual effect, while lowering it will decrease the effect)
 
 Camera controls:
 A: Left
