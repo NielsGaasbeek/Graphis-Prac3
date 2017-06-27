@@ -12,13 +12,15 @@ void main()
 {
 	// retrieve input pixel
 	outputColor = texture( pixels, uv ).rgb;
-	// apply dummy postprocessing effect
+
 	float dx = P.x - 0.5, dy = P.y - 0.5;
 	float distance = -sqrt( dx * dx + dy * dy ) * 0.5f;
 	//calculate distance to screen.
-	//400x640
 	//add this distance to the outputColor to make pixels further away darker.
 	outputColor += distance;
+	
+	
+
 }
 
 // EOF
