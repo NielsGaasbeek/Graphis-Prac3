@@ -1,3 +1,10 @@
+Brian van Beusekom 	- 5899192
+Job van Zelm		- 5984394
+Niels Gaasbeek		- 5850983
+
+Extra Assignments:
+- vignetting + chromatic abberation
+
 Camera controls:
 A: Left
 S: Backwards
