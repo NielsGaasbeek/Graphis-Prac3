@@ -37,7 +37,7 @@ void main()
 	vec3 speculrColor;
 	if (dot(normal.xyz, LightDirection) < 0.0f)		//if-statement makes sure no highlight appears on the wrong side of the object
 	{
-		speculrColor = vec3(0f,0f,0f);	
+		speculrColor = vec3(0.0f,0.0f,0.0f);	
 	}
 	else	//standard calculation for specular component based on information from the lecture-slides
 	{
