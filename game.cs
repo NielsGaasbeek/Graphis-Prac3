@@ -32,11 +32,20 @@ namespace Template_P3
 
             //load meshes met (id, filepath, positie, texture filepath, optionele parent id (default: ""))
             //in het geval van een child is de positie t.o.v de parent
+
             scene.loadMesh("Floor", "../../assets/floor.obj", new Vector3(0, 0, 0), "../../assets/wit.jpg");
             scene.loadMesh("Sun", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/sun.jpg");
-            scene.loadMesh("Earth", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/earth.jpg","Sun");
+
+            scene.loadMesh("Mercury", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/Mercury.jpg", "Sun");
+            scene.loadMesh("Venus", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/Venus.jpg", "Sun");
+            scene.loadMesh("Earth", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/earth.jpg", "Sun");
             scene.loadMesh("Moon", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/moon.jpg", "Earth");
-            
+            scene.loadMesh("Mars", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/mars.jpg", "Sun");
+            scene.loadMesh("Jupiter", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/jupiter.jpg", "Sun");
+            scene.loadMesh("Saturn", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/saturn.jpg", "Sun");
+            scene.loadMesh("Uranus", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/uranus.jpg", "Sun");
+            scene.loadMesh("Neptune", "../../assets/sphere.obj", new Vector3(0, 0, 0), "../../assets/neptune.jpg", "Sun");
+
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -50,7 +59,7 @@ namespace Template_P3
             quad = new ScreenQuad();
 
             //base transformation to the camera-matrix, to set the camera in the start-position
-            camMatrix =  Matrix4.CreateTranslation(new Vector3(0,-5f, -10f));
+            camMatrix = Matrix4.CreateTranslation(new Vector3(0, -5f, -10f));
 
             //set the light-position, camera-position and ambient-color
             int lightID = GL.GetUniformLocation(shader.programID, "lightPos");
@@ -58,20 +67,61 @@ namespace Template_P3
             cPosID = GL.GetUniformLocation(shader.programID, "cameraPos");
 
             GL.UseProgram(shader.programID);
-            GL.Uniform3(lightID, new Vector3(0.0f, 10.0f, 20.0f));
+            GL.Uniform3(lightID, new Vector3(0.0f, 20.0f, 0.0f));
             GL.Uniform3(ambientID, 0f, 0f, 0f);
-            GL.Uniform4(cPosID, new Vector4(0f,-5f,-10f, 1f));
+            GL.Uniform4(cPosID, new Vector4(0f, -5f, -10f, 1f));
         }
 
         // tick for background surface
         public void Tick()
         {
             screen.Clear(0);
-            screen.Print("hello world", 2, 2, 0xffff00);
+
+            //transformaties van meshes
+            scene.graph["Floor"].modelMatrix = Matrix4.CreateScale(7.0f);
+            scene.graph["Sun"].modelMatrix = Matrix4.CreateRotationY(b);
+
+            scene.children["Mercury"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Mercury"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(20, 0, 0));
+            scene.children["Mercury"].modelMatrix *= Matrix4.CreateScale(0.15f);
+
+            scene.children["Venus"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Venus"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(20, 0, -20));
+            scene.children["Venus"].modelMatrix *= Matrix4.CreateScale(0.25f);
+
+            scene.children["Earth"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Earth"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, 0, 25));
+            scene.children["Earth"].modelMatrix *= Matrix4.CreateScale(0.35f);
+
+            scene.children["Moon"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Moon"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(-15, 0, 0));
+            scene.children["Moon"].modelMatrix *= Matrix4.CreateScale(0.3f);
+
+            scene.children["Mars"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Mars"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(-40, 0, -40));
+            scene.children["Mars"].modelMatrix *= Matrix4.CreateScale(0.3f);
+
+            scene.children["Jupiter"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Jupiter"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(0, 0, -20));
+            scene.children["Jupiter"].modelMatrix *= Matrix4.CreateScale(0.9f);
+
+            scene.children["Saturn"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Saturn"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(35, 0, 0));
+            scene.children["Saturn"].modelMatrix *= Matrix4.CreateScale(0.7f);
+
+
+            scene.children["Uranus"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Uranus"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(60, 0, 60));
+            scene.children["Uranus"].modelMatrix *= Matrix4.CreateScale(0.5f);
+
+            scene.children["Neptune"].modelMatrix = Matrix4.CreateRotationY(b);
+            scene.children["Neptune"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(-60, 0, 60));
+            scene.children["Neptune"].modelMatrix *= Matrix4.CreateScale(0.55f);
+
         }
 
+        float b;
 
-        float a,b;
 
         // tick for OpenGL rendering code
         public void RenderGL()
@@ -81,28 +131,19 @@ namespace Template_P3
             timer.Reset();
             timer.Start();
 
-            a += 0.01f * frameDuration;
             b += 0.001f * frameDuration;
-            if (a > 2 * PI) { a -= 2 * PI; b -= 2 * PI; }
+            if (b > 2 * PI) { b -= 2 * PI; }
 
             // prepare matrix for vertex shader
             Matrix4 transform = camMatrix;
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
+
             //set the position of the camera for specular calculations
             GL.UseProgram(shader.programID);
-            Vector4 cameraPos = new Vector4(0f,0f,0f,1f) * Matrix4.Invert(camMatrix);
+            Vector4 cameraPos = new Vector4(0f, 0f, 0f, 1f) * Matrix4.Invert(camMatrix);
             GL.Uniform3(cPosID, cameraPos.Xyz);
 
-            scene.graph["Sun"].modelMatrix = Matrix4.CreateRotationY(b);
-
-            scene.children["Earth"].modelMatrix = Matrix4.CreateRotationY(b);
-            scene.children["Earth"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(15, 0, 0));
-            scene.children["Earth"].modelMatrix *= Matrix4.CreateScale(0.5f);
-
-            scene.children["Moon"].modelMatrix = Matrix4.CreateRotationY(b);
-            scene.children["Moon"].modelMatrix *= Matrix4.CreateTranslation(new Vector3(20, 0, 0));
-            scene.children["Moon"].modelMatrix *= Matrix4.CreateScale(0.3f);
 
             if (useRenderTarget)
             {
