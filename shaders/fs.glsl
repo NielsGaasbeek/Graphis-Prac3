@@ -9,6 +9,7 @@ uniform sampler2D pixels;		// texture sampler
 uniform vec3 lightPos;
 uniform vec3 ambientColor;
 uniform vec3 cameraPos;
+uniform int isSun;
 
 // shader output
 out vec4 outputColor;
@@ -27,11 +28,29 @@ void main()
 	vec3 ReflectedViewDirection = normalize(-reflect(ViewDirection, normal.xyz));
 
 	//sets the colors used for the shading calculations
-	vec3 lightColor = vec3(10,10,10);
+	vec3 lightColor = vec3(20,20,20);
 	vec3 materialColor = texture(pixels, uv).xyz;
 
-	//standard diffuse-color calculations based on NDotL-shading and distance attenuation
-	vec3 diffuseColor = materialColor * ( max( 0.0f, dot( normal.xyz, LightDirection))) * lightColor * attenuation;
+	vec3 diffuseColor;
+	if(isSun == 1)
+	{
+		//this allows the sun to be lit from the inside, allowing the sun to be the lightsource and making our specific scene nicer
+		diffuseColor = 
+			materialColor * 
+			-dot(normal.xyz, LightDirection) * 
+			lightColor * 
+			attenuation;
+	}
+	else
+	{
+		//standard diffuse-color calculations based on NDotL-shading and distance attenuation
+		diffuseColor = 
+			materialColor * 
+			( max( 0.0f, dot( normal.xyz, LightDirection))) * 
+			lightColor * 
+			attenuation;		
+	}
+
 
 	//calculations for the specular part of the shading
 	vec3 speculrColor;
@@ -42,9 +61,13 @@ void main()
 	else	//standard calculation for specular component based on information from the lecture-slides
 	{
 		float alpha = 4.0f;
-		speculrColor = materialColor * ( pow( max( 0.0f, dot( LightDirection, ReflectedViewDirection)), alpha)) * lightColor * attenuation;		
+		speculrColor = 
+			materialColor * 
+			( pow( max( 0.0f, dot( LightDirection, ReflectedViewDirection)), alpha)) * 
+			lightColor * 
+			attenuation;		
 	}
 
 	//outputColor is then set to the sum of all components
-	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1) ; 
+	outputColor = vec4( (ambientColor + diffuseColor + speculrColor), 1); 
 }
