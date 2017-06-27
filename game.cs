@@ -67,7 +67,7 @@ namespace Template_P3
             cPosID = GL.GetUniformLocation(shader.programID, "cameraPos");
 
             GL.UseProgram(shader.programID);
-            GL.Uniform3(lightID, new Vector3(0.0f, 20.0f, 0.0f));
+            GL.Uniform3(lightID, new Vector3(0.0f, 0.0f, 0.0f));
             GL.Uniform3(ambientID, 0f, 0f, 0f);
             GL.Uniform4(cPosID, new Vector4(0f, -5f, -10f, 1f));
         }

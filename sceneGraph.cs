@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 
@@ -53,6 +54,12 @@ namespace Template_P3
             //...heeft zijn eigen lijst met children die recursief worden gerenderd.
             foreach (KeyValuePair<string, Mesh> M in graph)
             {
+                //these lines have been added for our specific scene, allowing the sun to be a lightsource
+                GL.UseProgram(shader.programID);
+                if (M.Key == "Sun")
+                    GL.Uniform1(shader.uniform_isSun, 1);
+                else GL.Uniform1(shader.uniform_isSun, 0);
+
                 M.Value.Render(shader, M.Value.modelMatrix * transform, M.Value.modelMatrix * toWorld);
 
                 if (M.Value.Children.Count > 0)
@@ -68,6 +75,10 @@ namespace Template_P3
 
         public void RenderChild(Mesh mesh, Shader shader, Matrix4 transform, Matrix4 toWorld)
         {
+            //this makes sure none of the other scene-objects are lighted the same as the sun
+            GL.UseProgram(shader.programID);
+            GL.Uniform1(shader.uniform_isSun, 0);
+
             mesh.Render(shader, mesh.modelMatrix * transform, mesh.modelMatrix * toWorld);
             //als de mesh weer children heeft, worden deze hier recursief gerenderd. 
             //Hierdoor kan er theoretisch oneindig diep in de scenegraph worden gegaan en is er dus geen dieptelimiet.
